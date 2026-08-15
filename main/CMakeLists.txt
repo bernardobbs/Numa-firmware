@@ -1093,6 +1093,7 @@ idf_component_register(SRCS ${SOURCES}
                         esp_http_client
                         esp_http_server
                         esp_wifi
+                        esp_event
                         ${MAIN_PRIV_REQUIRES_EXTRA}
                     )
 
