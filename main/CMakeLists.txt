@@ -1084,6 +1084,15 @@ idf_component_register(SRCS ${SOURCES}
                         bt
                         fatfs
                         xiaozhi-fonts
+                        # --- MUMA (spotpear/sp-esp32-s3-1.54-muma) ---
+                        # notifications.cc, config_server.cc: descobertos so na
+                        # compilacao real (o build falha com "X includes Y.h,
+                        # provided by Z, however Z is not in the requirements
+                        # list" se algum desses faltar).
+                        json
+                        esp_http_client
+                        esp_http_server
+                        esp_wifi
                         ${MAIN_PRIV_REQUIRES_EXTRA}
                     )
 
