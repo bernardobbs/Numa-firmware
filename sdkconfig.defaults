@@ -57,10 +57,12 @@ CONFIG_LV_USE_FONT_COMPRESSED=n
 CONFIG_LV_USE_FONT_PLACEHOLDER=n
 CONFIG_LV_USE_LODEPNG=y
 
-# QR code widget -- usado pelo board MUMA pra mostrar a URL da pagina de
-# configuracao (ver sp-esp32-s3-1.54-muma.cc, ToggleQrCode). Off por
-# padrao no Kconfig do LVGL.
-CONFIG_LV_USE_QRCODE=y
+# NAO ligar CONFIG_LV_USE_QRCODE: da erro real de link ("multiple
+# definition of qrcodegen_makeEci") contra o qrcodegen.c que o
+# componente espressif2022__esp_emote_gfx ja embute por conta propria.
+# O board MUMA desenha o QR code na mao (ver sp-esp32-s3-1.54-muma.cc,
+# ToggleQrCode, e mumaqr.h/.cc -- copia renomeada do mesmo gerador,
+# sem conflito) em vez de usar o widget lv_qrcode da LVGL.
 
 # Disable extra widgets to save flash size
 CONFIG_LV_USE_ANIMIMG=n
