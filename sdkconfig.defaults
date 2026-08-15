@@ -57,6 +57,11 @@ CONFIG_LV_USE_FONT_COMPRESSED=n
 CONFIG_LV_USE_FONT_PLACEHOLDER=n
 CONFIG_LV_USE_LODEPNG=y
 
+# QR code widget -- usado pelo board MUMA pra mostrar a URL da pagina de
+# configuracao (ver sp-esp32-s3-1.54-muma.cc, ToggleQrCode). Off por
+# padrao no Kconfig do LVGL.
+CONFIG_LV_USE_QRCODE=y
+
 # Disable extra widgets to save flash size
 CONFIG_LV_USE_ANIMIMG=n
 CONFIG_LV_USE_CALENDAR=n
