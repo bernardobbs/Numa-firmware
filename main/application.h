@@ -18,6 +18,8 @@
 #include "device_state.h"
 #include "device_state_machine.h"
 
+#include <cJSON.h>
+
 // Main event bits
 #define MAIN_EVENT_SCHEDULE             (1 << 0)
 #define MAIN_EVENT_SEND_AUDIO           (1 << 1)
@@ -110,6 +112,16 @@ public:
     bool UpgradeFirmware(const std::string& url, const std::string& version = "");
     bool CanEnterSleepMode();
     void SendMcpMessage(const std::string& payload);
+    // Notificacao MCP fire-and-forget (sem "id" -- nao e resposta a
+    // nenhuma chamada). NAO confundir com SendMcpMessage(payload) acima:
+    // aquela e o transporte de baixo nivel de RESPOSTAS correlacionadas
+    // por id (so usada por McpServer::ReplyResult/ReplyError). Esta monta
+    // o envelope {"jsonrpc":"2.0","method":...,"params":...} e despacha
+    // pelo mesmo SendMcpMessage() por dentro -- usada por eventos do
+    // dispositivo (pomodoro, alarme, etc.) que o servidor deve tratar
+    // como evento, nao como fala do usuario. params pode ser nullptr
+    // pra eventos sem dados.
+    void SendMcpNotification(const std::string& method, const cJSON* params = nullptr);
     void RegisterMcpBroadcastCallback(std::function<void(const std::string&)> callback);
     void SetAecMode(AecMode mode);
     AecMode GetAecMode() const { return aec_mode_; }

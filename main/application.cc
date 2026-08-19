@@ -1150,6 +1150,23 @@ void Application::SendMcpMessage(const std::string& payload) {
     });
 }
 
+void Application::SendMcpNotification(const std::string& method, const cJSON* params) {
+    cJSON* root = cJSON_CreateObject();
+    cJSON_AddStringToObject(root, "jsonrpc", "2.0");
+    cJSON_AddStringToObject(root, "method", method.c_str());
+    if (params != nullptr) {
+        cJSON_AddItemToObject(root, "params", cJSON_Duplicate(params, true));
+    }
+    char* json = cJSON_PrintUnformatted(root);
+    std::string payload(json);
+    cJSON_free(json);
+    cJSON_Delete(root);
+    // Reaproveita o transporte de baixo nivel ja existente (Schedule()
+    // + protocol_->SendMcpMessage()) -- so a construcao do envelope
+    // (sem "id", method+params livres) e nova.
+    SendMcpMessage(payload);
+}
+
 void Application::SetAecMode(AecMode mode) {
     aec_mode_ = mode;
     Schedule([this]() {
